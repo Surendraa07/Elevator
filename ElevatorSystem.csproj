@@ -8,44 +8,17 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>ElevatorSystem</RootNamespace>
     <AssemblyName>ElevatorSystem</AssemblyName>
-    <!-- The 64-bit Microsoft ACE OLEDB provider is installed, so the process must be x64. -->
     <PlatformTarget>x64</PlatformTarget>
     <Platforms>x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Data.OleDb" Version="8.0.1" />
-  </ItemGroup>
-
-  <!--
-    ADOX (Microsoft ADO Ext. 6.0 for DDL and Security), used to create the .accdb when it is missing.
-    A <COMReference> only resolves under Visual Studio's MSBuild.exe; `dotnet build` fails with MSB4803.
-    So Visual Studio builds use the COMReference directly, and CLI builds use lib\Interop.ADOX.dll,
-    which is the same type library pre-imported with:
-      TlbImp.exe "C:\Program Files\Common Files\System\ado\msadox.dll" /out:lib\Interop.ADOX.dll /namespace:ADOX /machine:X64
-    Either way the interop types are embedded, so no extra DLL ships.
-  -->
-  <ItemGroup Condition="'$(MSBuildRuntimeType)' == 'Full'">
-    <COMReference Include="ADOX">
-      <Guid>{00000600-0000-0010-8000-00aa006d2ea4}</Guid>
-      <VersionMajor>6</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>false</Isolated>
-      <EmbedInteropTypes>true</EmbedInteropTypes>
-    </COMReference>
-  </ItemGroup>
-  <ItemGroup Condition="'$(MSBuildRuntimeType)' != 'Full'">
-    <Reference Include="Interop.ADOX">
-      <HintPath>lib\Interop.ADOX.dll</HintPath>
-      <EmbedInteropTypes>true</EmbedInteropTypes>
-    </Reference>
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <!-- Ship the database next to the executable (bin\...\Data\ElevatorLog.accdb). -->
-    <None Update="Data\ElevatorLog.accdb">
+    <!-- SQL Server connection settings (server and database name), read from the executable's folder. -->
+    <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

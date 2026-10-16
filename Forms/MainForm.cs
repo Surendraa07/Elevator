@@ -215,7 +215,12 @@ public sealed class MainForm : Form
             else
             {
                 bool created = (bool)args.Result!;
-                _dbLabel.Text = $"Database: {_repository.DisplayPath}{(created ? " (created)" : string.Empty)}";
+                _dbLabel.Text = $"Database: {_repository.DisplayName}{(created ? " (created)" : string.Empty)}";
+            }
+
+            if (_repository.SettingsWarning != null)
+            {
+                _statusLabel.Text = _repository.SettingsWarning;
             }
         };
         worker.RunWorkerAsync();
@@ -264,7 +269,8 @@ public sealed class MainForm : Form
         if (_logErrorReported)
         {
             _logErrorReported = false;
-            _dbLabel.Text = $"Database: {_repository.DisplayPath} (logging resumed)";
+            _dbLabel.Text = $"Database: {_repository.DisplayName} (logging resumed)";
+            _statusLabel.Text = "The database is available again; queued events were saved.";
         }
     }
 

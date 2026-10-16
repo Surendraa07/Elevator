@@ -103,7 +103,7 @@ public sealed class LogForm : Form
         var table = (DataTable)e.Result!;
         _grid.DataSource = table;
         FormatColumns();
-        _statusLabel.Text = $"{table.Rows.Count} entries (newest first) – {_repository.DisplayPath}";
+        _statusLabel.Text = $"{table.Rows.Count} entries (newest first) – {_repository.DisplayName}";
     }
 
     private void ApplyTheme(Theme theme, Panel toolbar)
@@ -138,7 +138,7 @@ public sealed class LogForm : Form
     private void FormatColumns()
     {
         SetColumn("Id", "Id", 8);
-        SetColumn("EventTime", "Time", 22, "yyyy-MM-dd HH:mm:ss");
+        SetColumn("EventTime", "Time", 22, "yyyy-MM-dd HH:mm:ss.fff");
         SetColumn("ElevatorId", "Elevator", 10);
         SetColumn("Floor", "Floor", 8);
         SetColumn("Status", "Event / status", 70);
